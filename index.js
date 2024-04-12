@@ -4,7 +4,8 @@ require("dotenv").config();
 const database = require("./config/database");
 database.connect();
 
-const route = require("./routes/client/index.route");
+const routeAdmin = require("./routes/admin/index.route");
+const routeClient = require("./routes/client/index.route");
 
 const app = express();
 const port = process.env.PORT;
@@ -15,7 +16,8 @@ app.set("view engine", "pug");
 app.use(express.static("public"));
 
 // Routes
-route(app);
+routeAdmin(app);
+routeClient(app);
 // End Routes
 
 app.listen(port, () => {
