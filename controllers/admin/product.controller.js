@@ -20,25 +20,25 @@ module.exports.index = async (req, res) => {
     },
   ];
 
-  if (req.query.status) {
+  if(req.query.status) {
     const index = filterStatus.findIndex((item) => {
       return item.status == req.query.status;
     });
+    
+    console.log(index)
+    filterStatus[index].class = "active";
+  } else {
+    const index = filterStatus.findIndex((item) => {
+      return item.status == "";
+    })
+
+    console.log(index)
     filterStatus[index].class = "active";
   }
 
   let find = {
     deleted: false,
   };
-
-  if (req.query.status) {
-    find.status = req.query.status;
-  } else {
-    const index = filterStatus.findIndex((item) => {
-      return item.status == "";
-    });
-    filterStatus[index].class = "active";
-  }
 
   console.log(filterStatus);
 
