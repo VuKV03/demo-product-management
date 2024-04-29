@@ -25,14 +25,12 @@ module.exports.index = async (req, res) => {
       return item.status == req.query.status;
     });
     
-    console.log(index)
     filterStatus[index].class = "active";
   } else {
     const index = filterStatus.findIndex((item) => {
       return item.status == "";
     })
 
-    console.log(index)
     filterStatus[index].class = "active";
   }
 
@@ -40,7 +38,19 @@ module.exports.index = async (req, res) => {
     deleted: false,
   };
 
-  console.log(filterStatus);
+  if(req.query.status) {
+    find.status = req.query.status;
+  }
+
+  let keyword = "";
+  if(req.query.keyword) {
+    keyword = req.query.keyword;
+    const regex = new RegExp(keyword, "i"); // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+    
+    // console.log(regex);
+    find.title = regex;
+  }
+
 
   const products = await Product.find(find);
 
@@ -48,5 +58,6 @@ module.exports.index = async (req, res) => {
     pageTitle: "Trang danh sách sản phẩm",
     products: products,
     filterStatus: filterStatus,
+    keyword: keyword,
   });
 };
