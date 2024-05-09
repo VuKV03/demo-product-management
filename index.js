@@ -1,4 +1,5 @@
 const express = require("express");
+const methodOverride = require('method-override')
 require("dotenv").config();
 
 const database = require("./config/database");
@@ -20,6 +21,9 @@ app.use(express.static("public"));
 // Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 // End Variables
+
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
 
 // Routes
 routeAdmin(app);
