@@ -1,5 +1,6 @@
 const express = require("express");
 const methodOverride = require('method-override')
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const database = require("./config/database");
@@ -24,6 +25,9 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 // override with POST having ?_method=DELETE
 app.use(methodOverride('_method'))
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 routeAdmin(app);
