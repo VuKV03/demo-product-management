@@ -1,4 +1,6 @@
 const Product = require("../../models/product.model");
+
+const systemConfig = require("../../config/system");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
@@ -40,13 +42,29 @@ module.exports.index = async (req, res) => {
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
 
-  res.render("admin/pages/products/index", {
-    pageTitle: "Trang danh sách sản phẩm",
-    products: products,
-    filterStatus: filterStatus,
-    keyword: objectSearch.keyword,
-    pagination: objectPagination,
-  });
+    if(products.length) {
+      res.render("admin/pages/products/index", {
+        pageTitle: "Trang danh sách sản phẩm",
+        products: products,
+        filterStatus: filterStatus,
+        keyword: objectSearch.keyword,
+        pagination: objectPagination,
+      });
+    } else {
+      // res.redirect(`/${systemConfig.prefixAdmin}/products`);
+
+      let stringQuery = "";
+      for(const key in req.query) {
+        if(key != "page") {
+          stringQuery += `&${key}=${req.query[key]}`;
+        }
+      }
+
+      const href = `${req.baseUrl}?page=1${stringQuery}`;
+      res.redirect(href);
+    }
+
+  
 };
 
 // [PATCH] /admin/change-status/products/:status/:id
@@ -81,7 +99,17 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.deleteItem = async (req, res) => {
   const id = req.params.id;
 
-  await Product.deleteOne({ _id: id});
+  // await Product.deleteOne({ _id: id});
+  await Product.updateOne(
+    {
+      _id: id
+    },
+    {
+    deleted: true,
+    deletedAt: new Date(),
+  })
+
+  console.log(id);
 
   res.redirect("back");
 };
