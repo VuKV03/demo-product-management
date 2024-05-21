@@ -42,29 +42,27 @@ module.exports.index = async (req, res) => {
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
 
-    if(products.length) {
-      res.render("admin/pages/products/index", {
-        pageTitle: "Trang danh sách sản phẩm",
-        products: products,
-        filterStatus: filterStatus,
-        keyword: objectSearch.keyword,
-        pagination: objectPagination,
-      });
-    } else {
-      // res.redirect(`/${systemConfig.prefixAdmin}/products`);
+  if (products.length) {
+    res.render("admin/pages/products/index", {
+      pageTitle: "Trang danh sách sản phẩm",
+      products: products,
+      filterStatus: filterStatus,
+      keyword: objectSearch.keyword,
+      pagination: objectPagination,
+    });
+  } else {
+    // res.redirect(`/${systemConfig.prefixAdmin}/products`);
 
-      let stringQuery = "";
-      for(const key in req.query) {
-        if(key != "page") {
-          stringQuery += `&${key}=${req.query[key]}`;
-        }
+    let stringQuery = "";
+    for (const key in req.query) {
+      if (key != "page") {
+        stringQuery += `&${key}=${req.query[key]}`;
       }
-
-      const href = `${req.baseUrl}?page=1${stringQuery}`;
-      res.redirect(href);
     }
 
-  
+    const href = `${req.baseUrl}?page=1${stringQuery}`;
+    res.redirect(href);
+  }
 };
 
 // [PATCH] /admin/change-status/products/:status/:id
@@ -84,10 +82,19 @@ module.exports.changeMulti = async (req, res) => {
   switch (type) {
     case "active":
     case "inactive":
-      await Product.updateMany({ _id: {$in: ids}}, { status: type});
-      
+      await Product.updateMany({ _id: { $in: ids } }, { status: type });
       break;
-  
+
+    case "delete-all":
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
+          deleted: true,
+          deletedAt: new Date(),
+        }
+      );
+      break;
+
     default:
       break;
   }
@@ -102,12 +109,13 @@ module.exports.deleteItem = async (req, res) => {
   // await Product.deleteOne({ _id: id});
   await Product.updateOne(
     {
-      _id: id
+      _id: id,
     },
     {
-    deleted: true,
-    deletedAt: new Date(),
-  })
+      deleted: true,
+      deletedAt: new Date(),
+    }
+  );
 
   console.log(id);
 
