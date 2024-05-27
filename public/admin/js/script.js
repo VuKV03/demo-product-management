@@ -127,10 +127,10 @@ if (formChangeMulti) {
 
     const typeChange = e.target.elements.type.value;
 
-    if(typeChange == "delete-all") {
-      const isConfirm = confirm("Xóa hết mấy sản phẩm này nháa<3333")
+    if (typeChange == "delete-all") {
+      const isConfirm = confirm("Xóa hết mấy sản phẩm này nháa<3333");
 
-      if(!isConfirm) {
+      if (!isConfirm) {
         return;
       }
     }
@@ -141,17 +141,17 @@ if (formChangeMulti) {
 
       inputsChecked.forEach((input) => {
         const id = input.value;
-        
-        if(typeChange == "change-position") {
-          const position = input.closest("tr").querySelector("input[name='position']").value;
 
-          ids.push(`${id}-${position}`)
+        if (typeChange == "change-position") {
+          const position = input
+            .closest("tr")
+            .querySelector("input[name='position']").value;
+
+          ids.push(`${id}-${position}`);
         } else {
           ids.push(id);
         }
       });
-
-      
 
       inputIds.value = ids.join(", ");
 
@@ -173,7 +173,7 @@ if (buttonsDelete) {
   buttonsDelete.forEach((button) => {
     button.addEventListener("click", () => {
       const confirmDelete = confirm("Xóa là mất đấyy!!");
-      if(confirmDelete) {
+      if (confirmDelete) {
         const id = button.getAttribute("data-id");
 
         const action = path + `/${id}?_method=DELETE`;
@@ -182,8 +182,22 @@ if (buttonsDelete) {
 
         formDeleteItem.submit();
       }
-      
     });
   });
 }
 // End Delete
+
+// Show Alert
+const showAlert = document.querySelector("[show-alert]");
+if (showAlert) {
+  const time = parseInt(showAlert.getAttribute("data-time")) || 3000;
+  const closeAlert = showAlert.querySelector("[close-alert]");
+  setTimeout(() => {
+    showAlert.classList.add("alert-hidden");
+  }, time);
+
+  closeAlert.addEventListener("click", () => {
+    showAlert.classList.add("alert-hidden");
+  });
+}
+// End Show Alert
