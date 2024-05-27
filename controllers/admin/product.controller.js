@@ -86,6 +86,7 @@ module.exports.changeMulti = async (req, res) => {
     case "active":
     case "inactive":
       await Product.updateMany({ _id: { $in: ids } }, { status: type });
+      req.flash("success", `Cập nhật trạng thái thành công ${ids.length} sản phẩm!`);
       break;
 
     case "delete-all":
@@ -96,6 +97,7 @@ module.exports.changeMulti = async (req, res) => {
           deletedAt: new Date(),
         }
       );
+      req.flash("success", `Xóa thành công ${ids.length} sản phẩm!`);
       break;
 
     case "change-position":
@@ -103,6 +105,7 @@ module.exports.changeMulti = async (req, res) => {
         const [id, position] = item.split("-");
         await Product.updateOne({ _id: id }, { position: position});
       }
+      req.flash("success", `Thay đổi vị trí thành công ${ids.length} sản phẩm!`);
       break;
 
     default:
@@ -127,7 +130,7 @@ module.exports.deleteItem = async (req, res) => {
     }
   );
 
-  console.log(id);
+  req.flash("success", `Xóa thành công sản phẩm!`);
 
   res.redirect("back");
 };
