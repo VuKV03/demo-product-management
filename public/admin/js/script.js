@@ -23,9 +23,8 @@ if (buttonsStatus.length > 0) {
 const formSearch = document.querySelector("#form-search");
 if (formSearch) {
   let url = new URL(window.location.href);
-
   formSearch.addEventListener("submit", (e) => {
-    e.preventDefault(); // Ngăn ngừa hành vi mặc định (load lại trang)
+    e.preventDefault();
     const value = e.target.elements.keyword.value;
 
     if (value != "") {
@@ -40,31 +39,32 @@ if (formSearch) {
 // End Form Search
 
 // Pagination
-const buttonsPagination = document.querySelectorAll("[button-pagination]");
-let url = new URL(window.location.href);
+const buttonPagination = document.querySelectorAll("[button-pagination]");
+if (buttonPagination) {
+  let url = new URL(window.location.href);
 
-buttonsPagination.forEach((button) => {
-  button.addEventListener("click", () => {
-    const page = button.getAttribute("button-pagination");
+  buttonPagination.forEach((button) => {
+    button.addEventListener("click", () => {
+      const page = button.getAttribute("button-pagination");
 
-    url.searchParams.set("page", page);
+      url.searchParams.set("page", page);
 
-    window.location.href = url.href;
+      window.location.href = url.href;
+    });
   });
-});
+}
 // End Pagination
 
-// Change status
-const buttonsChangeStatus = document.querySelectorAll("[button-change-status]");
-if (buttonsChangeStatus) {
+// Change Status
+const buttonChangeStatus = document.querySelectorAll("[button-change-status]");
+if (buttonChangeStatus.length) {
   const formChangeStatus = document.querySelector("#form-change-status");
   const path = formChangeStatus.getAttribute("data-path");
 
-  buttonsChangeStatus.forEach((button) => {
+  buttonChangeStatus.forEach((button) => {
     button.addEventListener("click", () => {
       const statusCurrent = button.getAttribute("data-status");
       const id = button.getAttribute("data-id");
-
       const statusChange = statusCurrent == "active" ? "inactive" : "active";
 
       const action = path + `/${statusChange}/${id}?_method=PATCH`;
@@ -76,7 +76,7 @@ if (buttonsChangeStatus) {
     });
   });
 }
-// End Change status
+// End Change Status
 
 // Checkbox Multi
 const checkboxMulti = document.querySelector("[checkbox-multi]");
@@ -111,6 +111,7 @@ if (checkboxMulti) {
     });
   });
 }
+
 // End Checkbox Multi
 
 // form-change-multi
@@ -128,11 +129,9 @@ if (formChangeMulti) {
     const typeChange = e.target.elements.type.value;
 
     if (typeChange == "delete-all") {
-      const isConfirm = confirm("Xóa hết mấy sản phẩm này nháa<3333");
+      const isConfirm = confirm("Bạn có chắc muốn xóa những sản phẩm này?");
 
-      if (!isConfirm) {
-        return;
-      }
+      if (!isConfirm) return;
     }
 
     if (inputsChecked.length > 0) {
@@ -157,22 +156,21 @@ if (formChangeMulti) {
 
       formChangeMulti.submit();
     } else {
-      alert("Có 1 ô cũng không chọn được ơ??");
+      alert("Vui lòng chọn ít nhất một bản ghi!!");
     }
   });
 }
-
 // End form-change-multi
 
 // Delete
-const buttonsDelete = document.querySelectorAll("[button-delete]");
-if (buttonsDelete) {
+const buttonDelete = document.querySelectorAll("[button-delete]");
+if (buttonDelete.length) {
   const formDeleteItem = document.querySelector("#form-delete-item");
   const path = formDeleteItem.getAttribute("data-path");
 
-  buttonsDelete.forEach((button) => {
+  buttonDelete.forEach((button) => {
     button.addEventListener("click", () => {
-      const confirmDelete = confirm("Xóa là mất đấyy!!");
+      const confirmDelete = confirm("Bạn có chắc muốn xóa bản ghi này??");
       if (confirmDelete) {
         const id = button.getAttribute("data-id");
 
@@ -187,7 +185,7 @@ if (buttonsDelete) {
 }
 // End Delete
 
-// Show Alert
+// Show alert
 const showAlert = document.querySelector("[show-alert]");
 if (showAlert) {
   const time = parseInt(showAlert.getAttribute("data-time")) || 3000;
@@ -200,4 +198,24 @@ if (showAlert) {
     showAlert.classList.add("alert-hidden");
   });
 }
-// End Show Alert
+
+// End Show alert
+
+// Upload Image
+const uploadImage = document.querySelector("[upload-image]");
+if (uploadImage) {
+  const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
+  const uploadImagePreview = uploadImage.querySelector("[upload-image-preview");
+
+  uploadImageInput,
+    addEventListener("change", (e) => {
+      if (e.target.files.length) {
+        const image = URL.createObjectURL(e.target.files[0]);
+
+        uploadImagePreview.src = image;
+      }
+    });
+}
+
+
+// End Upload Image
