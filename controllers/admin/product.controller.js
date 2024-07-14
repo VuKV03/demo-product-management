@@ -150,7 +150,6 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/createPost
 module.exports.createPost = async (req, res) => {
-
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
@@ -165,7 +164,7 @@ module.exports.createPost = async (req, res) => {
   if (req.file && req.file.filename) {
     req.body.thumbnail = `/uploads/${req.file.filename}`;
   }
-  console.log(req.file.filename)
+  console.log(req.file.filename);
 
   const product = new Product(req.body);
   await product.save();
@@ -175,7 +174,35 @@ module.exports.createPost = async (req, res) => {
 
 // [GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
+  const id = req.params.id;
+
+  const product = await Product.findOne({
+    _id: id,
+    deleted: false,
+  });
+
   res.render("admin/pages/products/edit", {
     pageTitle: "Chỉnh sửa sản phẩm",
+    product: product,
   });
+};
+
+// [POST] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+  const id = req.params.id;
+
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  req.body.position = parseInt(req.body.position);
+
+  if (req.file && req.file.filename) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
+
+  await Product.updateOne({ _id: id}, req.body);
+
+  req.flash("success", "Cập nhật sản phẩm thành công!!")
+
+  res.redirect("back");
 };
