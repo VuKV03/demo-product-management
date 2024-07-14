@@ -25,6 +25,9 @@ router.post(
   "/create", 
   upload.single("thumbnail"), 
   validate.createPost,
-  controller.createPost);
+  controller.createPost
+);
+
+router.get("/edit/:id", controller.edit);
 
 module.exports = router;

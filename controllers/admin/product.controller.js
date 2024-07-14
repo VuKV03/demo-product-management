@@ -172,3 +172,10 @@ module.exports.createPost = async (req, res) => {
 
   res.redirect(`/${systemConfig.prefixAdmin}/products`);
 };
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+  res.render("admin/pages/products/edit", {
+    pageTitle: "Chỉnh sửa sản phẩm",
+  });
+};
