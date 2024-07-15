@@ -24,7 +24,7 @@ app.use(express.static("public"));
 
 // Flash
 app.use(cookieParser('Ghi gì cũng được'));
-app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(session({ cookie: { maxAge: 60000 }, resave: false, saveUninitialized: true, secret: "123456"}));
 app.use(flash());
 // End Flash
 
