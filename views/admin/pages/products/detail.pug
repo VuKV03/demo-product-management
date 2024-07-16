@@ -5,35 +5,35 @@ block main
   +alert-success(5000)
   +alert-error(5000)
 
-  if(product.title)
+  if (product.title)
     h1(class="mb-4") #{product.title}
 
-  if(product.price)
+  if (product.price)
     div(class="mb-4") Giá: <b>#{product.price}$</b>
 
-  if(product.discoutPercentage)
+  if (product.discountPercentage)
     div(class="mb-4") Giảm giá: <b>#{product.discountPercentage}%</b>
 
-  if(product.stock)
+  if (product.stock)
     div(class="mb-4") Còn lại: <b>#{product.stock}</b>
-  
-  if(product.thumbnail)
+
+  if (product.thumbnail)
     div(class="mb-4")
       img(
-        src=product.thumbnail 
+        src=product.thumbnail
         style="width: 100px"
       )
 
-  if(product.status)
+  if (product.status)
     div(class="mb-4")
-      span Trạng thái: 
-      if(product.status === "active")
+      span Trạng thái:
+      if (product.status === "active")
         span(class="badge badge-success") Hoạt động
-      else  
+      else
         span(class="badge badge-danger") Dừng hoạt động
 
-  if(product.position)
+  if (product.position)
     div(class="mb-4") Vị trí: <b>#{product.position}</b>
 
-  if(product.description)
-    div(class="mb-4") #{product.description}
+  if (product.description)
+    div(class="mb-4") !{product.description}

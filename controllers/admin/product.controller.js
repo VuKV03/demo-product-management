@@ -198,7 +198,7 @@ module.exports.edit = async (req, res) => {
   }
 };
 
-// [POST] /admin/products/edit/:id
+// [PATCH] /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
   const id = req.params.id;
 
