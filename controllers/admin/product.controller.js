@@ -199,9 +199,16 @@ module.exports.edit = async (req, res) => {
       deleted: false,
     });
 
+    const records = await ProductCategory.find({
+      deleted: false,
+    });
+
+    const newRecords = createTree(records);
+
     res.render("admin/pages/products/edit", {
       pageTitle: "Chỉnh sửa sản phẩm",
       product: product,
+      records: newRecords,
     });
   } catch (error) {
     req.flash("error", "Sản phẩm không tồn tại");
