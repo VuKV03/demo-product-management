@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const moment = require("moment");
 var path = require("path");
 require("dotenv").config();
 
@@ -45,6 +46,7 @@ app.use(
 
 // Variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 // End Variables
 
 // override with POST having ?_method=DELETE
