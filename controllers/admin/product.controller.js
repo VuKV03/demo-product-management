@@ -172,21 +172,26 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/createPost
 module.exports.createPost = async (req, res) => {
-  req.body.price = parseInt(req.body.price);
-  req.body.discountPercentage = parseInt(req.body.discountPercentage);
-  req.body.stock = parseInt(req.body.stock);
+  const permissions = res.locals.role.permissions;
+  if (permissions.includes("products_create")) {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
 
-  if (req.body.position === "") {
-    const countProducts = await Product.countDocuments();
-    req.body.position = countProducts + 1;
+    if (req.body.position === "") {
+      const countProducts = await Product.countDocuments();
+      req.body.position = countProducts + 1;
+    } else {
+      req.body.position = parseInt(req.body.position);
+    }
+
+    const product = new Product(req.body);
+    await product.save();
+
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
   } else {
-    req.body.position = parseInt(req.body.position);
+    return;
   }
-
-  const product = new Product(req.body);
-  await product.save();
-
-  res.redirect(`/${systemConfig.prefixAdmin}/products`);
 };
 
 // [GET] /admin/products/edit/:id
