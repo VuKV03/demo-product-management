@@ -37,18 +37,21 @@ mixin table-tree(items, level = 1)
             button-change-status
           ) Dừng hoạt động
       td
-        a(
-          class="btn btn-secondary btn-sm"
-          href=`/${prefixAdmin}/product-category/detail/${item.id}`
-        ) Chi tiết
-        a(
-          class="btn btn-warning btn-sm ml-1"
-          href=`/${prefixAdmin}/product-category/edit/${item.id}`
-        ) Sửa
-        button(
-          class="btn btn-danger btn-sm ml-1"
-          button-delete
-          data-id=item.id
-        ) Xóa
+        if(role.permissions.includes("product-category_view"))
+          a(
+            class="btn btn-secondary btn-sm"
+            href=`/${prefixAdmin}/product-category/detail/${item.id}`
+          ) Chi tiết
+        if(role.permissions.includes("product-category_edit"))
+          a(
+            class="btn btn-warning btn-sm ml-1"
+            href=`/${prefixAdmin}/product-category/edit/${item.id}`
+          ) Sửa
+        if(role.permissions.includes("product-category_delete"))
+          button(
+            class="btn btn-danger btn-sm ml-1"
+            button-delete
+            data-id=item.id
+          ) Xóa
       if item.children && item.children.length > 0
         +table-tree(item.children, level + 1)
