@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model");
+const productsHelper = require("../../helpers/products");
 
 // [GET] /products
 module.exports.index = async (req, res) => {
@@ -7,14 +8,7 @@ module.exports.index = async (req, res) => {
     deleted: false,
   }).sort({ position: "desc" });
 
-  const newProducts = products.map((item) => {
-    item.newPrice = (
-      (item.price * (100 - item.discountPercentage)) /
-      100
-    ).toFixed(0);
-
-    return item;
-  });
+  const newProducts = productsHelper.newProductsPrice(products);
 
   res.render("client/pages/products/index", {
     pageTitle: "Trang danh sách sản phẩm",
@@ -29,12 +23,12 @@ module.exports.detail = async (req, res) => {
     const product = await Product.findOne({
       slug: slug,
       deleted: false,
-      status: "active"
+      status: "active",
     });
 
     res.render("client/pages/products/detail", {
       pageTitle: "Trang chi tiết sản phẩm",
-      product: product
+      product: product,
     });
   } catch (error) {
     res.redirect("/");
