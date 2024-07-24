@@ -86,8 +86,6 @@ module.exports.detail = async (req, res) => {
 
     product.newPrice = productsHelper.newProductPrice(product);
 
-    console.log(product)
-
     res.render("client/pages/products/detail", {
       pageTitle: "Trang chi tiết sản phẩm",
       product: product,
