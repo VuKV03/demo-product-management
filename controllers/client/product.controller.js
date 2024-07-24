@@ -27,8 +27,31 @@ module.exports.category = async (req, res) => {
     status: "active",
   });
 
+  const getSubCategory = async (parentId) => {
+    const subs = await ProductCategory.find({
+      parent_id: parentId,
+      status: "active",
+      deleted: false,
+    });
+
+    let allSub = [...subs];
+
+    for (const sub of subs) {
+      const childs = await getSubCategory(sub.id);
+      allSub = allSub.concat(childs);
+    }
+
+    return allSub;
+  };
+
+  const listSubCategory = await getSubCategory(category.id);
+
+  const listSubCategoryId = listSubCategory.map((item) => item.id);
+
   const products = await Product.find({
-    product_category_id: category.id,
+    product_category_id: {
+      $in: [category.id, ...listSubCategoryId],
+    },
     status: "active",
     deleted: false,
   }).sort({ position: "desc" });
@@ -36,7 +59,7 @@ module.exports.category = async (req, res) => {
   const newProducts = productsHelper.newProductsPrice(products);
 
   res.render("client/pages/products/index", {
-    pageTitle: "Trang danh sách sản phẩm",
+    pageTitle: category.title,
     products: newProducts,
   });
 };
