@@ -13,3 +13,15 @@ if (showAlert) {
 }
 
 // End Show alert
+
+// Button Go Back
+const buttonsGoBack = document.querySelectorAll("[button-go-back]");
+if (buttonsGoBack.length > 0) {
+  buttonsGoBack.forEach((button) => {
+    button.addEventListener("click", () => {
+      history.back();
+    });
+  });
+}
+
+// End Button Go Back
