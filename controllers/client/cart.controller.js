@@ -82,7 +82,6 @@ module.exports.delete = async (req, res) => {
   const cartId = req.cookies.cartId;
   const productId = req.params.productId;
 
-  console.log(productId);
   await Cart.updateOne(
     {
       _id: cartId,
