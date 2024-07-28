@@ -5,7 +5,9 @@ const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const moment = require("moment");
-var path = require("path");
+const http = require("http");
+const { Server } = require("socket.io");
+const path = require("path");
 require("dotenv").config();
 
 const database = require("./config/database");
@@ -23,6 +25,13 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 app.use(express.static(`${__dirname}/public`));
+
+// SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+global._io = io;
+
+// End SocketIO
 
 // Flash
 app.use(cookieParser("Ghi gì cũng được"));
@@ -68,6 +77,6 @@ app.get("*", (req, res) => {
 });
 // 404
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`App listen on port ${port}`);
 });
