@@ -20,8 +20,16 @@ module.exports.index = async (req, res) => {
       _io.emit("SERVER_RETURN_MESSAGE", {
         userId: userId,
         fullName: fullName,
-        content: content
-      })
+        content: content,
+      });
+    });
+
+    socket.on("CLIENT_SEND_TYPING", (type) => {
+      socket.broadcast.emit("SERVER_RETURN_TYPING", {
+        userId: userId,
+        fullName: fullName,
+        type: type,
+      });
     });
   });
   // End SocketI0
