@@ -16,6 +16,8 @@ if (formSendData) {
     const content = e.target.elements.content.value;
     const images = upload.cachedFileArray || [];
 
+    console.log(images);
+
     if (content || images.length > 0) {
       socket.emit("CLIENT_SEND_MESSAGE", {
         content: content,
@@ -33,7 +35,7 @@ if (formSendData) {
 socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const myId = document.querySelector("[my-id]").getAttribute("my-id");
   const body = document.querySelector(".chat .inner-body");
-  const boxTyping = document.querySelector(".inner-list-typing");
+  const boxTyping = body.querySelector(".inner-list-typing");
 
   const div = document.createElement("div");
 

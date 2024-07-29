@@ -11,7 +11,7 @@ module.exports.index = async (req, res) => {
   // SocketI0
   _io.once("connection", (socket) => {
     socket.on("CLIENT_SEND_MESSAGE", async (data) => {
-      let images = [];
+      const images = [];
 
       if(data.images.length > 0) {
         for (const imageBuffer of data.images) {
@@ -19,6 +19,24 @@ module.exports.index = async (req, res) => {
           images.push(linkImage);
         }
       }
+
+      // TEST
+      // console.log(data.images);
+      // const chat = new Chat({
+      //   user_id: userId,
+      //   content: data.content,
+      //   images: data.images
+      // });
+      // await chat.save();
+
+      // _io.emit("SERVER_RETURN_MESSAGE", {
+      //   userId: userId,
+      //   fullName: fullName,
+      //   content: data.content,
+      //   images: data.images
+      // });
+
+      // TEST
 
       // Lưu vào db
       const chat = new Chat({

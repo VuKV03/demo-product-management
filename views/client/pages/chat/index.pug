@@ -10,9 +10,6 @@ block main
     .row
       .col-12
         .chat(my-id=user.id)
-          //- .inner-head
-          //-   .inner-avatar EY
-          //-   .inner-name Em Yêu
           .inner-body
             each chat in chats 
               div(class=(chat.infoUser.id == user.id ? "inner-outgoing" : "inner-incomming"))
@@ -26,7 +23,10 @@ block main
                     each image in chat.images 
                       img(src=image)
 
-          div(class="inner-list-typing")
+            div(class="inner-list-typing")
+
+          .inner-preview-images 
+            div(class="custom-file-container" data-upload-id="upload-image")
 
           .inner-foot
             form(
@@ -38,7 +38,11 @@ block main
                 placeholder="Nhập nội dung..."
                 name="content"
               )
-              div(class="custom-file-container" data-upload-id="upload-image")
+              label(
+                for="file-upload-with-preview-upload-image"
+                class="btn btn-light mx-2 mb-0"
+              ) 
+                i.fa-solid.fa-image
               span(class="button-icon btn btn-light mx-2") 
                 i.fa-regular.fa-face-smile-wink
               button
