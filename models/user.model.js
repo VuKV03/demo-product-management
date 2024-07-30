@@ -12,6 +12,14 @@ const userSchema = new mongoose.Schema(
     },
     phone: String,
     avatar: String,
+    friendList: [ //Danh sách bạn bè
+      {
+        user_id: String,
+        room_chat_id: String
+      }
+    ],
+    acceptFriends: Array, // Lời mời dã nhận
+    requestFriends: Array, // Lời mời đã gửi
     status: {
       type: String,
       default: "active"
