@@ -73,8 +73,6 @@ module.exports.loginPost = async (req, res) => {
   res.cookie("tokenUser", user.tokenUser);
 
   // Lưu user_id vào collection carts
-  console.log(user.id);
-  console.log(req.cookies.cartId);
   await Cart.updateOne(
     {
       _id: req.cookies.cartId,
@@ -103,7 +101,6 @@ module.exports.forgotPassword = async (req, res) => {
 
 // [POST] /user/password/forgot
 module.exports.forgotPasswordPost = async (req, res) => {
-  console.log(req.body.email);
   const email = req.body.email;
 
   const user = await User.findOne({

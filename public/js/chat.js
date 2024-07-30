@@ -16,7 +16,7 @@ if (formSendData) {
     const content = e.target.elements.content.value;
     const images = upload.cachedFileArray || [];
 
-    console.log(images);
+    // console.log(images);
 
     if (content || images.length > 0) {
       socket.emit("CLIENT_SEND_MESSAGE", {
