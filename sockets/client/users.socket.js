@@ -43,6 +43,27 @@ module.exports = (req, res) => {
           }
         );
       }
+      // Lấy ra độ dài acceptFriends của B và trả về cho B
+      const infoUserB = await User.findOne({
+        _id: userIdB,
+      });
+      const lengthAcceptFriends = infoUserB.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        userId: userIdB,
+        lengthAcceptFriends: lengthAcceptFriends,
+      });
+
+      // Lấy info của A trả về cho B
+      const infoUserA = await User.findOne({
+        _id: myUserId  
+      }).select("id avatar fullName");
+
+      socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND", {
+        userId: userIdB,
+        infoUserA: infoUserA
+      })
+
     });
 
     // Chức năng hủy yêu cầu
@@ -85,6 +106,22 @@ module.exports = (req, res) => {
           }
         );
       }
+      // Lấy ra độ dài acceptFriends của B và trả về cho B
+      const infoUserB = await User.findOne({
+        _id: userIdB,
+      });
+      const lengthAcceptFriends = infoUserB.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        userId: userIdB,
+        lengthAcceptFriends: lengthAcceptFriends,
+      });
+
+      // Lấy Id của A và trả về cho B
+      socket.broadcast.emit("SERVER_RETURN_USER_ID_CANCEL_FRIEND", {
+        userIdB: userIdB,
+        userIdA: myUserId
+      })
     });
     // Hết Chức năng hủy yêu cầu
 
